@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "text": "B-ING",
+    "prefixKey": null,
+    "suffixKey": "0",
+    "backgroundColor": "#73D8FF",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 2,
+    "text": "I-ING",
+    "prefixKey": null,
+    "suffixKey": "1",
+    "backgroundColor": "#009CE0",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 3,
+    "text": "B-QUANTITY",
+    "prefixKey": null,
+    "suffixKey": "2",
+    "backgroundColor": "#AEA1FF",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 4,
+    "text": "I-QUANTITY",
+    "prefixKey": null,
+    "suffixKey": "3",
+    "backgroundColor": "#7B64FF",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 5,
+    "text": "B-UNIT",
+    "prefixKey": null,
+    "suffixKey": "4",
+    "backgroundColor": "#FDA1FF",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 6,
+    "text": "I-UNIT",
+    "prefixKey": null,
+    "suffixKey": "5",
+    "backgroundColor": "#FA28FF",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 7,
+    "text": "B-STATE",
+    "prefixKey": null,
+    "suffixKey": "6",
+    "backgroundColor": "#68CCCA",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 8,
+    "text": "I-STATE",
+    "prefixKey": null,
+    "suffixKey": "7",
+    "backgroundColor": "#16A5A5",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 9,
+    "text": "B-PART",
+    "prefixKey": null,
+    "suffixKey": "8",
+    "backgroundColor": "#A4DD00",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 10,
+    "text": "I-PART",
+    "prefixKey": null,
+    "suffixKey": "9",
+    "backgroundColor": "#68BC00",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 11,
+    "text": "B-EQUIPMENT",
+    "prefixKey": null,
+    "suffixKey": "a",
+    "backgroundColor": "#FCC400",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 12,
+    "text": "I-EQUIPMENT",
+    "prefixKey": null,
+    "suffixKey": "b",
+    "backgroundColor": "#FB9E00",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 13,
+    "text": "B-ALT",
+    "prefixKey": null,
+    "suffixKey": "c",
+    "backgroundColor": "#F44E3B",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 14,
+    "text": "I-ALT",
+    "prefixKey": null,
+    "suffixKey": "d",
+    "backgroundColor": "#D33115",
+    "textColor": "#ffffff"
+  },
+  {
+    "id": 15,
+    "text": "O",
+    "prefixKey": null,
+    "suffixKey": "e",
+    "backgroundColor": "#0C797D",
+    "textColor": "#ffffff"
+  }
+]
