@@ -1,5 +1,6 @@
-from RicetteNER.code.Ingredient import Ingredient
-from RicetteNER.code.Nutritionals import Nutritionals
+from NerRicette.code.Ingredient import Ingredient
+from NerRicette.code.Nutritionals import Nutritionals
+from NerRicette.code.Nutritional import Nutritional
 import json
 class Recipe:
     def __init__(self):
@@ -30,15 +31,20 @@ class Recipe:
     def getNutritionalValue(self):
         nutritional = Nutritionals()
         total_for_nutr = None
+        unit = None
         for key in nutritional.to_json().keys():
             for ingredient in self.ingredients:
-                if ingredient.nutr_vals is not None and ingredient.nutr_vals[key] is not None:
+                if ingredient.nutr_vals is not None and ingredient.nutr_vals[key] is not None and ingredient.nutr_vals[key].value is not None:
                     if total_for_nutr is not None:
-                        total_for_nutr += ingredient.nutr_vals[nutr].value
+                        total_for_nutr += ingredient.nutr_vals[key].value
                     else:
-                        total_for_nutr = ingredient.nutr_vals[nutr].value
+                        unit = ingredient.nutr_vals[key].unit
+                        total_for_nutr = ingredient.nutr_vals[key].value
+            nutritional[key]= Nutritional()
+            nutritional[key].value = total_for_nutr
+            nutritional[key].unit = unit
             total_for_nutr = None
-            nutritional[key]=total_for_nutr
+            unit = None
         return nutritional
            
 

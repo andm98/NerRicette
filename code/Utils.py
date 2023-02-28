@@ -1,20 +1,12 @@
-from transformers import AutoTokenizer, AutoModel
 import json
 from deep_translator import GoogleTranslator
-import urllib
-from RicetteNER.code.Ingredient import Ingredient
-from RicetteNER.code.Nutritionals import Nutritionals
-from RicetteNER.code.Nutritional import Nutritional
-import numpy as np
-import torch
+from NerRicette.code.Ingredient import Ingredient
 
 
 class Utils:
     def __init__(self):
-        PATH = './'
         self.trans = GoogleTranslator(source='it', target='en')
-        self.model =  AutoModel.from_pretrained(PATH + "model/", output_hidden_states=True)
-        self.tokenizer = AutoTokenizer.from_pretrained(PATH + "model/")
+       
 
     #metodi di conversione e normalizzazione delle unità di misura
 
@@ -34,64 +26,6 @@ class Utils:
             return None
         return float(val)*SI[unit_in]/SI[unit_out]
 
-    #metodi per valutazione distanza sintattica e semantica
-
-    def DistBatra(self, str1, str2):
-        str1 = set(str1.split())
-        str2 = set(str2.split())
-        return float(len(str1 & str2)) / len(str1)
-
-    def get_hidden_states(self, encoded, model, layers):
-        with torch.no_grad():
-            output = model(**encoded)
-        # Get all hidden states
-        states = output.hidden_states
-        # Stack and sum all requested layers
-        output = torch.stack([states[i] for i in layers]).mean(0).squeeze()
-        # Only select the tokens that constitute the requested word
-        word_tokens_output = output
-        return word_tokens_output.sum(dim=0)
- 
- 
-    def get_word_vector(self, sent, tokenizer, model, layers):
-        encoded = tokenizer.encode_plus(sent, return_tensors="pt")
-        with torch.no_grad():
-            output = model(**encoded)
-        return self.get_hidden_states(encoded, model, layers).numpy()
- 
- 
-    def getWordEmb(self, sent, layers=None):
-        # Use last four layers by default
-        layers = [-4, -3, -2, -1] if layers is None else layers
-        word_embedding = self.get_word_vector(sent, self.tokenizer, self.model, layers)
-        return word_embedding 
-
-    #metodi per la conversione dei valori nutrizionali da USDA
-
-    def getValNutUSDA(self,id):
-        nuts = self.getValNutsUSDA()
-        if id in nuts:
-            return nuts[id]
-        return None
-
-    def getValNutsUSDA(self):
-        return {
-            1003:"protein",
-            1004:"total_lipid_fat",
-            1005:"carbohydrate_by_difference",
-            1008:"energy",
-            1050:"carbohydrate_by_summation",
-            1062:"energy",
-            1063:"sugars",
-            1079:"fiber_total_dietary",
-            1093:"sodium_na",
-            1257:"fatty_acids_total_trans",
-            1258:"fatty_acids_total_saturated"
-        }
-
-    def getQueryUSDA(self, ingre):
-        return urllib.parse.quote('+'+'('+ ingre.text + ')' + " " + " ".join(ingre.state))
-
     #altri metodi di utilità
 
     def isBlank (self, myString):
@@ -101,6 +35,8 @@ class Utils:
         ing = Ingredient()
         ings = []
         ings.append(ing)
+        if anns is None:
+            return ings
         for ann in anns:
             if(ann['entity_group']=='ING'):
                 if(not self.isBlank(ing.text)):
@@ -139,5 +75,4 @@ class Utils:
             if not self.isBlank(ing.text):
                 ing_en.state.append(self.trans.translate(state))
         return ing_en
-   
 

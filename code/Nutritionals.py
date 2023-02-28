@@ -1,5 +1,5 @@
 import json
-from RicetteNER.code.Nutritional import Nutritional
+from NerRicette.code.Nutritional import Nutritional
 class Nutritionals:
   def __init__(self):
     self.protein = None
