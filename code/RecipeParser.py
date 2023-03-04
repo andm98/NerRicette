@@ -29,6 +29,7 @@ class RecipeParser:
     print(ricetta)
     print("---VALORI NUTRIZIONALI---")
     print(ricetta.getNutritionalValue())
+    return ricetta
 
   def parseFromUrl(self, url):
     ricetta = Recipe()
@@ -48,6 +49,7 @@ class RecipeParser:
       print(ricetta)
       print("---VALORI NUTRIZIONALI---")
       print(ricetta.getNutritionalValue())
+      return ricetta
      
   def parseWithoutNutr(self, text):    
     ings = self.utils.getIngsFromAnns(self.token_classifier(text.lower()))
