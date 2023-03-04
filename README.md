@@ -1,33 +1,50 @@
 # NerRicette
-![Imamgine 1](assets/imgs/robot.png?raw=true "Bot")
-[a link](https://it.freepik.com/vettori-gratuito/illustrazione-del-concetto-di-android_19880016.htm#query=robot&position=6&from_view=author") Immagine di storyset
+![Bot](assets/imgs/robot.png?raw=true "Bot")
 
-La repository contiene NerRicette un modello per il riconoscimento di tag relativi alla cucina e la stima dei valori nutrizionali di 
-ricette.
+La repository contiene NerRicette, un modello per il riconoscimento di tag relativi alla cucina e la stima di valori nutrizionali.
 Il riconoscimento avviene tramite un modello BERT multilinguaggio, addestrato nella fase di fine-tuning 
-nell'assegnazione di uno dei seguenti tag ai token della frase in input:
+nella classificazione dei token in input con i seguenti tag:
 | Tag           | Descrizione                                              |
 | ------------- | -------------------------------------------------------- |
 | B-ING         | Nome dell'ingrediente                                    |
-| Content Cell  | Content Cell                                             |
+| I-ING         |                                                          |
+| B-QUANTITY    | Quantità                                                 |
+| I-QUANTITY    |                                                          |
+| B-UNIT        | Unità di misura                                          |
+| I-UNIT        |                                                          |
+| B-STATE       | Lavorazione dell’ingrediente                             |
+| I-STATE       |                                                          |
+| B-PART        | Parte dell’ingrediente                                   |
+| I-PART        |                                                          |
+| B-EQUIPMENT   | Attrezzattura utilizzata nella ricetta                   |
+| I-EQUIPMENT   |                                                          |
+| B-ALT         | Alternativa di un ingrediente                            |
+| I-ALT         |                                                          |
+| O             | Altro                                                    |
 
 
+La stima dei valori nutrizionali avviene tramite l'associazione degli ingredienti
+riconosciuti con quelli presenti nei dataset USDA.
 
+É possibile testare il modello al seguente link:
+[Prova il modello](https://colab.research.google.com/drive/1uDFF2jacVXE4TaxSXtPhCpB4YNwkganj#)
 
-Riproducibilità
+1. Eseguire il notebook 'Creazione dataset'
+2. Annotare i dati
+3. Eseguire il notebook 'Creazione dataset annotato' 
+4. Eseguire il notebook 'Addestramento modello'
 
-1- Eseguire il notebook 'Creazione dataset'
-2- Annotare i dati
-3- Eseguire il notebook 'Creazione dataset' 
-4- Eseguire il notebook 'Addestramento modello'
-
-è possibile utilizzare i dati annotati in ... ed eseguire la fase 4
+É possibile utilizzare i dati annotati in ... ed eseguire direttamente la fase 4
 
 
 Risorse utilizzate:
--recipescraper
--hugginface e modello
--spacy
+* recipescraper
+* hugginface
+* modello
+* spacy
+* usda
+* doccano
+
 
 
 
