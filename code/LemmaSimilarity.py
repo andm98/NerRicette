@@ -25,4 +25,6 @@ class LemmaSimilarity(SimilarityStrategy):
     def DistBatra(self, str1, str2):
         str1 = set(str1.split())
         str2 = set(str2.split())
-        return float(len(str1 & str2)) / len(str1)
+        if len(str1)>0:
+            return float(len(str1 & str2)) / len(str1)
+        return 0
