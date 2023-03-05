@@ -19,7 +19,7 @@ class UsdaDataset(NutritionalDataset):
 
     def score(self, ing):
         return ing['score']
-    def setNutritional(self, ing, sim_strategy, alt_strategy):
+    def setNutritional(self, ing, first_strategy, alt_strategy):
         ing_en = self.utils.translateIngredient(ing) 
         names_only = self.getFoodNameOnly(ing_en)
         api = self.url+'?api_key='+self.api_key+'&query='+self.getQuery(ing_en)
@@ -30,15 +30,16 @@ class UsdaDataset(NutritionalDataset):
         foods = json.loads(req.text)["foods"]
         print(ing_en.getDescription())
         for food in foods:
-            print("".join(food["description"].split(',')) + " first " + str(sim_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))) + " alt " + str(alt_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))))
-        foods = list(filter(lambda food: sim_strategy.isPresent(names_only,  ("".join(food["description"].split(',')[:2]))) , foods))
+            print("".join(food["description"].split(',')) + " first " + str(first_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))) + " alt " + str(alt_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))))
+        foods = list(filter(lambda food: first_strategy.isPresent(names_only,  ("".join(food["description"].split(',')[:2]))) , foods))
         if(len(foods)==0):
+            ing.nutr_vals = Nutritionals()
             return None
         foods.sort(reverse=True,key=self.score)
         more_similar_food = None
         max_similarity = -1
         for food in foods:
-            similarity = sim_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))
+            similarity = first_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))
             if(similarity>max_similarity):
                 max_similarity = similarity
                 more_similar_food = food
@@ -89,18 +90,18 @@ class UsdaDataset(NutritionalDataset):
         names_only = []
         words = ing.text.split()
         if len(words)==1:
-            return ing.text
+            return [ing.text]
         for word in words:
             food_text = self.parser.parseWithoutNutr(word).ingredients[0].text
             if not self.utils.isBlank(food_text):
                 names_only.append(food_text)
         if len(names_only)==1:
-            return names_only[0]
+            return names_only
         elif len(names_only)==0:
-            return ing.text
+            return [ing.text]
         tokens = self.nlp(" ".join(names_only))
         names_only = []
         for token in tokens:
             if token.tag_ == 'NN':
                 names_only.append(token.text)
-        return " ".join(names_only) if len(names_only)>0 else ing.text
+        return names_only if len(names_only)>0 else [ing.text]
