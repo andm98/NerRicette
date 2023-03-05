@@ -48,3 +48,17 @@ tra quelli disponibili nei dataset USDA.
 * USDA FoodData [link](https://fdc.nal.usda.gov/)
 * GialloZafferano [link](https://www.giallozafferano.it/)
 * Mysia.info [link](https://www.misya.info/)
+
+#### Creazione dataset (da fare)
+![Bot](assets/imgs/schema1.png?raw=true "Bot")
+1. Lista di ingredienti o ricetta da sito web
+2. Estrazione tag
+3. Ricerca dell'ingrediente nel dataset creato
+4. (Se match) Ingrediente con valori nutrizionali e tag semantici
+4. (Altrimenti) Assegnazione di tag semantici (da fare)
+5. Ricerca dei valori nutrizionali
+6. Salvataggio dell'ingrediente nel dataset
+7. Ingrediente con valori nutrizionali e tag semantici
+
+#### Esempi di ricerca(da fare)
+![Bot](assets/imgs/schema2.png?raw=true "Bot")
