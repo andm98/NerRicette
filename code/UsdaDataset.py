@@ -29,9 +29,6 @@ class UsdaDataset(NutritionalDataset):
             print("Superato il limite di chiamate dell'api USDA")
             return None
         foods = json.loads(req.text)["foods"]
-        print(ing_en.getDescription())
-        for food in foods:
-            print(" ".join(food["description"].split(', ')) + " first " + str(first_strategy.compare(ing_en.getDescription().split(), food["description"].split(', '))) + " alt " + str(alt_strategy.compare(ing_en.getDescription().split(), food["description"].split(', '))))
         foods = list(filter(lambda food: first_strategy.isPresent(names_only, food["description"].split(', ')[:2]) , foods))
         if(len(foods)==0):
             ing.nutr_vals = Nutritionals()
