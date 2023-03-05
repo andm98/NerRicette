@@ -30,34 +30,6 @@ class Utils:
 
     def isBlank (self, myString):
         return not (myString and myString.strip()) 
-    
-    def getIngsFromAnns(self, anns):
-        ing = Ingredient()
-        ings = []
-        ings.append(ing)
-        if anns is None:
-            return ings
-        for ann in anns:
-            if(ann['entity_group']=='ING'):
-                if(not self.isBlank(ing.text)):
-                    ing = Ingredient()
-                    ings.append(ing)
-                ing.text = ann['word']
-            elif(ann['entity_group']=='QUANTITY'):
-                if(not self.isBlank(ing.qty)):
-                    ing = Ingredient()
-                    ings.append(ing)
-                ing.qty = ann['word']
-            elif(ann['entity_group']=='UNIT'):
-                norm_unit = self.normalizeUnit(ann['word'])
-                ing.unit = norm_unit if norm_unit is not None else ann["word"]
-            elif(ann['entity_group']=='STATE'):
-                ing.state.append(ann['word'])
-            elif(ann['entity_group']=='PART'):
-                ing.part = ann['word']
-            elif(ann['entity_group']=='ALT'):
-                ing.alt.append(ann['word'])
-        return ings
 
     def translateIngredient(self, ing):
         if ing is None:

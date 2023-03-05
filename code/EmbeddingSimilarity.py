@@ -9,13 +9,13 @@ class EmbeddingSimilarity(SimilarityStrategy):
         self.model =  AutoModel.from_pretrained(PATH + "model/", output_hidden_states=True)
         self.tokenizer = AutoTokenizer.from_pretrained(PATH + "model/")
     
-    def compare(self, str1, str2):
-        str1_descr = self.getWordEmb(str1.lower())
-        str2_descr = self.getWordEmb(str2.lower())
+    def compare(self, str1s, str2s):
+        str1_descr = self.getWordEmb(" ".join(str1s).lower())
+        str2_descr = self.getWordEmb("".join(str2s).lower())
         distance = cosine(str1_descr, str2_descr)
         return (100-distance)/100
     
-    def isPresent(self, str1, str2):
+    def isPresent(self, str1s, str2s):
         print("to do")
         
     def get_hidden_states(self, encoded, model, layers):

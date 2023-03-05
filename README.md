@@ -45,6 +45,6 @@ tra quelli disponibili nei dataset USDA.
 * Modello Bert [link](https://huggingface.co/bert-base-multilingual-uncased)
 * Spacy [link](https://spacy.io/)
 * Doccano [link](https://github.com/doccano/doccano)
-* USDA FoodData[link](https://fdc.nal.usda.gov/)
+* USDA FoodData [link](https://fdc.nal.usda.gov/)
 * GialloZafferano [link](https://www.giallozafferano.it/)
 * Mysia.info [link](https://www.misya.info/)

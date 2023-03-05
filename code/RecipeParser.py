@@ -20,7 +20,7 @@ class RecipeParser:
     self.first_strg = LemmaSimilarity()
     self.alt_strg = EmbeddingSimilarity()
   def parse(self, text):    
-    ings = self.utils.getIngsFromAnns(self.token_classifier(text.lower()))
+    ings = self.getIngsFromAnns(self.token_classifier(text.lower()))
     ricetta = Recipe()
     ricetta.ingredients = ings
     for ing in tqdm(ings):
@@ -36,7 +36,7 @@ class RecipeParser:
       ricetta.instructions = ricettaScrape.instructions_list()
       ingrs = []
       for ingScrape in tqdm(ricettaScrape.ingredients()):
-        ings = self.utils.getIngsFromAnns(self.token_classifier(ingScrape.lower()))
+        ings = self.getIngsFromAnns(self.token_classifier(ingScrape.lower()))
         for ing in ings:
           self.nutr_dataset.setNutritional(ing, self.first_strg, self.alt_strg)
           ingrs.append(ing)
@@ -44,7 +44,36 @@ class RecipeParser:
       return ricetta
      
   def parseWithoutNutr(self, text):    
-    ings = self.utils.getIngsFromAnns(self.token_classifier(text.lower()))
+    ings = self.getIngsFromAnns(self.token_classifier(text.lower()))
     ricetta = Recipe()
     ricetta.ingredients = ings
     return ricetta
+  
+  #annotations    
+  def getIngsFromAnns(self, anns):
+    ing = Ingredient()
+    ings = []
+    ings.append(ing)
+    if anns is None:
+        return ings
+    for ann in anns:
+        if(ann['entity_group']=='ING'):
+            if(not self.utils.isBlank(ing.text)):
+                ing = Ingredient()
+                ings.append(ing)
+            ing.text = ann['word']
+        elif(ann['entity_group']=='QUANTITY'):
+            if(not self.utils.isBlank(ing.qty)):
+                ing = Ingredient()
+                ings.append(ing)
+            ing.qty = ann['word']
+        elif(ann['entity_group']=='UNIT'):
+            norm_unit = self.utils.normalizeUnit(ann['word'])
+            ing.unit = norm_unit if norm_unit is not None else ann["word"]
+        elif(ann['entity_group']=='STATE'):
+            ing.state.append(ann['word'])
+        elif(ann['entity_group']=='PART'):
+            ing.part = ann['word']
+        elif(ann['entity_group']=='ALT'):
+            ing.alt.append(ann['word'])
+    return ings

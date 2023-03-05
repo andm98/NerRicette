@@ -12,6 +12,7 @@ class UsdaDataset(NutritionalDataset):
         self.utils = Utils()
         self.parser = parser
         self.api_key = 'pgCVzl1d9f0Fe6fpNcVAkWbk1z8A7sCSzrhyNFGe'
+        #self.api_key = 'DEMO_KEY'
         self.url = 'https://api.nal.usda.gov/fdc/v1/foods/search/'
         self.nlp = spacy.load('en_core_web_sm')
     def getNutritional(self, str):
@@ -30,8 +31,8 @@ class UsdaDataset(NutritionalDataset):
         foods = json.loads(req.text)["foods"]
         print(ing_en.getDescription())
         for food in foods:
-            print("".join(food["description"].split(',')) + " first " + str(first_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))) + " alt " + str(alt_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))))
-        foods = list(filter(lambda food: first_strategy.isPresent(names_only,  ("".join(food["description"].split(',')[:2]))) , foods))
+            print("".join(food["description"].split(', ')) + " first " + str(first_strategy.compare(ing_en.getDescription().split(), food["description"].split(', '))) + " alt " + str(alt_strategy.compare(ing_en.getDescription().split(), food["description"].split(', '))))
+        foods = list(filter(lambda food: first_strategy.isPresent(names_only, food["description"].split(', ')[:2]) , foods))
         if(len(foods)==0):
             ing.nutr_vals = Nutritionals()
             return None
@@ -39,13 +40,13 @@ class UsdaDataset(NutritionalDataset):
         more_similar_food = None
         max_similarity = -1
         for food in foods:
-            similarity = first_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))
+            similarity = first_strategy.compare(ing_en.getDescription().split(), food["description"].split(', '))
             if(similarity>max_similarity):
                 max_similarity = similarity
                 more_similar_food = food
             elif(similarity==max_similarity and alt_strategy is not None):
-                sim_food = alt_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))
-                sim_more = alt_strategy.compare(ing_en.getDescription(), "".join(more_similar_food["description"].split(',')))
+                sim_food = alt_strategy.compare(ing_en.getDescription().split(), food["description"].split(', '))
+                sim_more = alt_strategy.compare(ing_en.getDescription().split(), more_similar_food["description"].split(', '))
                 if(sim_food>sim_more):
                     max_similarity = similarity
                     more_similar_food = food 
@@ -87,21 +88,17 @@ class UsdaDataset(NutritionalDataset):
     }
     
     def getFoodNameOnly(self, ing):
-        names_only = []
-        words = ing.text.split()
-        if len(words)==1:
+        if len(ing.text.split())==1:
             return [ing.text]
-        for word in words:
-            food_text = self.parser.parseWithoutNutr(word).ingredients[0].text
-            if not self.utils.isBlank(food_text):
-                names_only.append(food_text)
-        if len(names_only)==1:
-            return names_only
-        elif len(names_only)==0:
-            return [ing.text]
-        tokens = self.nlp(" ".join(names_only))
+        tokens = self.nlp(ing.text)
         names_only = []
         for token in tokens:
-            if token.tag_ == 'NN':
+            if token.tag_ == 'NN' or token.tag_ == 'NNS' or token.tag_ == 'NNP' or token.tag_ == 'NNPS':
                 names_only.append(token.text)
+        if(len(names_only)==1):
+            return [names_only]
+        for word in names_only:
+            food_text = self.parser.parseWithoutNutr(word).ingredients[0].text
+            if self.utils.isBlank(food_text):
+                names_only.remove(word)
         return names_only if len(names_only)>0 else [ing.text]
