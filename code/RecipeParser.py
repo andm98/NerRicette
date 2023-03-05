@@ -25,10 +25,6 @@ class RecipeParser:
     ricetta.ingredients = ings
     for ing in tqdm(ings):
       self.nutr_dataset.setNutritional(ing, self.first_strg, self.alt_strg)
-    print("---------RICETTA---------")
-    print(ricetta)
-    print("---VALORI NUTRIZIONALI---")
-    print(ricetta.getNutritionalValue())
     return ricetta
 
   def parseFromUrl(self, url):
@@ -45,10 +41,6 @@ class RecipeParser:
           self.nutr_dataset.setNutritional(ing, self.first_strg, self.alt_strg)
           ingrs.append(ing)
       ricetta.ingredients = ingrs
-      print("---------RICETTA---------")
-      print(ricetta)
-      print("---VALORI NUTRIZIONALI---")
-      print(ricetta.getNutritionalValue())
       return ricetta
      
   def parseWithoutNutr(self, text):    

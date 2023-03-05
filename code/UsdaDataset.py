@@ -28,6 +28,9 @@ class UsdaDataset(NutritionalDataset):
             print("Superato il limite di chiamate dell'api USDA")
             return None
         foods = json.loads(req.text)["foods"]
+        print(ing_en.getDescription())
+        for food in foods:
+            print("".join(food["description"].split(',')) + " first " + str(sim_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))) + " alt " + str(alt_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))))
         foods = list(filter(lambda food: sim_strategy.isPresent(names_only,  ("".join(food["description"].split(',')[:1]))) , foods))
         if(len(foods)==0):
             return None
@@ -36,15 +39,12 @@ class UsdaDataset(NutritionalDataset):
         max_similarity = -1
         for food in foods:
             similarity = sim_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))
-            print("".join(food["description"].split(',')))
-            print(food["description"] + ' SIMILARITY(first strategy): '+str(similarity))
             if(similarity>max_similarity):
                 max_similarity = similarity
                 more_similar_food = food
             elif(similarity==max_similarity and alt_strategy is not None):
                 sim_food = alt_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))
                 sim_more = alt_strategy.compare(ing_en.getDescription(), "".join(more_similar_food["description"].split(',')))
-                print(food["description"] + ' SIMILARITY(alt strategy): '+str(sim_food))
                 if(sim_food>sim_more):
                     max_similarity = similarity
                     more_similar_food = food 
@@ -58,10 +58,9 @@ class UsdaDataset(NutritionalDataset):
                     nutr.unit = item["unitName"]
                 nutrs[self.getValNutUSDA(item["nutrientId"])]=nutr
         ing.nutr_vals = nutrs
-   
     def getQuery(self, ingre):
         #dataType=Survey%20%28FNDDS%29
-        return urllib.parse.quote(ingre.text + " " + " ".join(ingre.state))+'&dataType=Foundation,SR%20Legacy&pageSize=10&pageNumber=1'
+        return urllib.parse.quote(ingre.text + " " + " ".join(ingre.state))+'&dataType=Survey%20%28FNDDS%29,Foundation,SR%20Legacy&pageSize=10&pageNumber=1'
     
      #metodi per la conversione dei valori nutrizionali da USDA
 
