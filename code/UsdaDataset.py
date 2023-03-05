@@ -21,8 +21,6 @@ class UsdaDataset(NutritionalDataset):
     def score(self, ing):
         return ing['score']
     def setNutritional(self, ing, first_strategy, alt_strategy):
-        if(len(ing.state))==0:
-            ing.state.append('raw')
         ing_en = self.utils.translateIngredient(ing) 
         names_only = self.getFoodNameOnly(ing_en)
         api = self.url+'?api_key='+self.api_key+'&query='+self.getQuery(ing_en)
