@@ -31,7 +31,7 @@ class UsdaDataset(NutritionalDataset):
         print(ing_en.getDescription())
         for food in foods:
             print("".join(food["description"].split(',')) + " first " + str(sim_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))) + " alt " + str(alt_strategy.compare(ing_en.getDescription(), "".join(food["description"].split(',')))))
-        foods = list(filter(lambda food: sim_strategy.isPresent(names_only,  ("".join(food["description"].split(',')[:1]))) , foods))
+        foods = list(filter(lambda food: sim_strategy.isPresent(names_only,  ("".join(food["description"].split(',')[:2]))) , foods))
         if(len(foods)==0):
             return None
         foods.sort(reverse=True,key=self.score)
