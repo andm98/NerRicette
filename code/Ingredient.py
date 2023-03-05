@@ -42,7 +42,7 @@ class Ingredient:
     return to_return
     
   def getDescription(self):
-    return self.text + " ".join(self.state)
+    return self.text + ' '+ " ".join(self.state)
 
 
 
