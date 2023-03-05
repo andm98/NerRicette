@@ -96,7 +96,7 @@ class UsdaDataset(NutritionalDataset):
             if token.tag_ == 'NN' or token.tag_ == 'NNS' or token.tag_ == 'NNP' or token.tag_ == 'NNPS':
                 names_only.append(token.text)
         if(len(names_only)==1):
-            return [names_only]
+            return names_only
         for word in names_only:
             food_text = self.parser.parseWithoutNutr(word).ingredients[0].text
             if self.utils.isBlank(food_text):

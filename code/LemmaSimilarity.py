@@ -15,6 +15,7 @@ class LemmaSimilarity(SimilarityStrategy):
     
     def isPresent(self, str1s, str2s):
         THRESHOLD = 1/len(str1s) if len(str1s)> 0 else 1
+        print(" ".join(str1s).lower())
         doc1 = self.nlp(" ".join(str1s).lower())
         lemmatized_sentence1 = " ".join([token.lemma_ for token in doc1]) 
         doc2 = self.nlp(" ".join(str2s).lower())
