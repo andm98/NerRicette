@@ -11,7 +11,7 @@ class EmbeddingSimilarity(SimilarityStrategy):
     
     def compare(self, str1s, str2s):
         str1_descr = self.getWordEmb(" ".join(str1s).lower())
-        str2_descr = self.getWordEmb("".join(str2s).lower())
+        str2_descr = self.getWordEmb(" ".join(str2s).lower())
         distance = cosine(str1_descr, str2_descr)
         return (100-distance)/100
     
