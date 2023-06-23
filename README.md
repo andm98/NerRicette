@@ -3,7 +3,7 @@
 
 The repository contains NerRicette, a model for recognizing cooking-related tags and for estimating nutritional values.
 A multilingual BERT model is used, trained in token classification with the following tags:
-| Tag           | Descrizione                                              |
+| Tag           | Description                                              |
 | ------------- | -------------------------------------------------------- |
 | B-ING         | Ingredient name, including type ("farina 00",  "carne di manzo", "lievito di birra"), color ("riso bianco", "nero"),  taste ("gelato al cioccolato") and origin ("pecorino romano").            |
 | I-ING         | Term within a span of an ingredient.                     |
@@ -29,11 +29,12 @@ You can test the model at the following link:
 2. Annotate the data with the data\annotated\label_config.json configuration tags
 3. Run the 'AnnotatedDataset' notebook for annotated dataset creation
 4. Run the 'Training' notebook to train the model
+
 You can use the dataset data\annotated\recipe_dataset.csv and perform step 4 directly.
 #### Food World
 The model was used for developing a webapp, referred to as Food World (currently not online).
 Food World is a platform for the semantic search of recipes, the estimation of nutritional values, and the creation of nutritional models.
-Database design and individual tasks are described.
+
 #### Dataset design
 Food World is based on a database of recipes, with ingredients and nutritional values.
 The insertion of a new recipe takes place automatically (with a possible final human control), through the following steps:
@@ -44,7 +45,9 @@ The insertion of a new recipe takes place automatically (with a possible final h
 5. If the ingredient is not available, semantic tags and nutritional information are assigned.
 6. The ingredient is saved and added to the recipe.
 7. The recipe is saved.
+
 ![Bot](assets/imgs/scheme.png?raw=true "Bot")
+
 #### Semantic search
 The recipes can be filtered for:
 * Title.
