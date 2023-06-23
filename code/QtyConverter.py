@@ -1,6 +1,6 @@
 import json
 from deep_translator import GoogleTranslator
-from NerRicette.code.Ingredient import Ingredient
+from NerRicette.code.datamodel.Ingredient import Ingredient
 
 
 class QtyConverter:
@@ -22,6 +22,7 @@ class QtyConverter:
         if (unit_in not in SI or unit_out not in SI) or not val.isdigit():
             return None
         return float(val)*SI[unit_in]/SI[unit_out]
+    """
     def convert():
         for item in list(filter(lambda item: item["nutrientId"] in (self.getValNutsUSDA().keys()), more_similar_food["foodNutrients"])):
                 nutr = Nutritional()
@@ -30,3 +31,4 @@ class QtyConverter:
                     nutr.value = (nutr_gr*item["value"])/100
                     nutr.unit = item["unitName"]
                 nutrs[self.getValNutUSDA(item["nutrientId"])]=nutr
+    """     

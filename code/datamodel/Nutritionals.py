@@ -1,5 +1,5 @@
 import json
-from NerRicette.code.Nutritional import Nutritional
+from NerRicette.code.datamodel.Nutritional import Nutritional
 class Nutritionals:
   def __init__(self):
     self.text = ""
@@ -13,10 +13,11 @@ class Nutritionals:
     self.sodium_na = None
     self.fatty_acids_total_trans = None
     self.fatty_acids_total_saturated = None
-
+    self.human_check = '0'
   def __iter__(self):
     yield from {
           "text": self.text,
+          "human_check": self.human_check,
           "protein": self.protein,
           "total_lipid_fat": self.total_lipid_fat,
           "carbohydrate_by_difference":self.carbohydrate_by_difference,
@@ -37,6 +38,7 @@ class Nutritionals:
   def to_json(self):
     to_return = { 
           "text": self.text,
+          "human_check": self.human_check,
           "protein": 
             self.protein.to_json() if self.protein is not None else Nutritional().to_json()
           ,

@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 class NutritionalDataset(ABC):
     
     @abstractmethod
-    def matchIngredient(self, str):
+    def matchIngredient(self, str, first_strategy, alt_strategy):
         pass
  
     @abstractmethod
