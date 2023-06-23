@@ -1,28 +1,29 @@
+<style>
+table {
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+</style>
 # NerRicette
 ![Bot](assets/imgs/bot_green.png?raw=true "Bot")
 The repository contains NerRicette, a model for recognizing cooking-related tags and for estimating nutritional values.
 A multilingual BERT model is used, trained in token classification with the following tags:
 | Tag           | Descrizione                                              |
 | ------------- | -------------------------------------------------------- |
-| B-ING         | Ingredient name, including type ("farina 00", 
-"carne di manzo", "lievito di birra"), color ("riso bianco", "nero"), 
-taste ("gelato al cioccolato") and origin ( "pecorino romano").            |
+| B-ING         | Ingredient name, including type ("farina 00",  "carne di manzo", "lievito di birra"), color ("riso bianco", "nero"),  taste ("gelato al cioccolato") and origin ( "pecorino romano").            |
 | I-ING         | Term within a span of an ingredient.                     |
 | B-QUANTITY    | Quantity.                                                |
 | I-QUANTITY    | Term within a span of a quantity.                        |
 | B-UNIT        | Unit of measure.                                         |
 | I-UNIT        | Term within a span of a unit of measurement.             |
-| B-STATE       | Ingredient processing ("tagliato", "cotto", "mescolato", 
-"fritto"), purpose ("per decorazione"), freshness, temperature.            |
+| B-STATE       | Ingredient processing ("tagliato", "cotto", "mescolato", "fritto"), purpose ("per decorazione"), freshness, temperature.         |
 | I-STATE       | Term within a span of a state.                           |
-| B-PART        | Part of the ingredient  ("succo", "buccia", "fegato", 
-"filetto").                                                                |
+| B-PART        | Part of the ingredient  ("succo", "buccia", "fegato", "filetto").                                                                |
 | I-PART        | Term within a span of a part of the ingredient.          |
 | B-ALT         |   Alternative to an ingredient. The alternative can 
 include all the elements of this table or only some of them.               |
-| I-ALT         |Term within a span of an alternative.                     |
-| O             | Punctuation or terms not included in the above
- categories.                                                               |
+| I-ALT         | Term within a span of an alternative.                    |
+| O             | Punctuation or terms not included in the above categories.                                                                        |
 
 Nutritional values are estimated by searching for the closest ingredient among those available in the USDA datasets.
 You can test the model at the following link:
