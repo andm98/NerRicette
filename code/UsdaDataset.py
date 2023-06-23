@@ -2,26 +2,32 @@ from NerRicette.code.abstract_class.NutritionalDataset import NutritionalDataset
 from NerRicette.code.Utils import Utils
 from NerRicette.code.Nutritionals import Nutritionals
 from NerRicette.code.Nutritionals import Nutritional
+from NerRicette.code.QtyConverter import QtyConverter
+from NerRicette.code.abstract_class.SemanticTagger import SemanticTagger
 import urllib
 import requests
 import json
 import spacy
 
 class UsdaDataset(NutritionalDataset):
-    def __init__(self, parser):
+    def __init__(self, parser, tagger):
         self.utils = Utils()
+        self.semanticTagger = tagger
+        self.qtyConverter = QtyConverter()
         self.parser = parser
         self.api_key = 'pgCVzl1d9f0Fe6fpNcVAkWbk1z8A7sCSzrhyNFGe'
         #self.api_key = 'DEMO_KEY'
         self.url = 'https://api.nal.usda.gov/fdc/v1/foods/search/'
         self.nlp = spacy.load('en_core_web_sm')
-    def getNutritional(self, str):
+    def setNutritional(self, ing, nutrs):
+         ing.nutr_vals = nutrs
+    
+    def matchIngredient(self, str):
         print("get")
 
     def score(self, ing):
         return ing['score']
-    def setNutritional(self, ing, first_strategy, alt_strategy):
-        ing_en = self.utils.translateIngredient(ing) 
+    def getNutritional(self, ing_en, first_strategy, alt_strategy):
         names_only = self.getFoodNameOnly(ing_en)
         api = self.url+'?api_key='+self.api_key+'&query='+self.getQuery(ing_en)
         req = requests.get(api)
@@ -31,32 +37,48 @@ class UsdaDataset(NutritionalDataset):
         foods = json.loads(req.text)["foods"]
         foods = list(filter(lambda food: first_strategy.isPresent(names_only, food["description"].split(', ')[:2]) , foods))
         if(len(foods)==0):
-            ing.nutr_vals = Nutritionals()
-            return None
+            return None #assegna quelli dell'ancestor
         foods.sort(reverse=True,key=self.score)
         more_similar_food = None
         max_similarity = -1
+        more_tags = None
+        sim_bool = False
         for food in foods:
+            print("elaborando "+food["description"])
             similarity = first_strategy.compare(ing_en.getDescription().split(), food["description"].split(', '))
             if(similarity>max_similarity):
                 max_similarity = similarity
                 more_similar_food = food
+                sim_bool = False
+                more_tags = None
             elif(similarity==max_similarity and alt_strategy is not None):
-                sim_food = alt_strategy.compare(ing_en.getDescription().split(), food["description"].split(', '))
-                sim_more = alt_strategy.compare(ing_en.getDescription().split(), more_similar_food["description"].split(', '))
+                food_tags = self.semanticTagger.getSemanticTag(" ".join(food["description"].split(', ')[:2]))
+                more_tags = self.semanticTagger.getSemanticTag(" ".join(more_similar_food["description"].split(', ')[:2])) if not sim_bool else more_tags
+                sim_food = alt_strategy.compareWithTags(ing_en.getDescription().split(), food["description"].split(', '), ing_en.semantic_tags, food_tags)
+                sim_more = alt_strategy.compareWithTags(ing_en.getDescription().split(), more_similar_food["description"].split(', '), ing_en.semantic_tags, more_tags)
+                print(" ".join(food["description"].split(', ')[:2]))
+                print(" ".join(more_similar_food["description"].split(', ')[:2]))
+                print(sim_food)
+                print(sim_more)
                 if(sim_food>sim_more):
+                    more_tags = food_tags
                     max_similarity = similarity
                     more_similar_food = food 
-        ing.nutr_text = more_similar_food["description"]
+                sim_bool = True
+                    
+        print("WINNER")
+        print(more_similar_food["description"])
+        print("_____________________________")
+        if self.utils.isEmpty(ing_en.semantic_tags) or self.utils.isEmpty(more_tags) or ing_en.semantic_tags[0]["ancestor"]!=more_tags[0]["ancestor"]: #sostituire con controllo più dettagliato
+            print("CONTROLLO UOMO")
         nutrs = Nutritionals()
+        nutrs.text = more_similar_food["description"]
         for item in list(filter(lambda item: item["nutrientId"] in (self.getValNutsUSDA().keys()), more_similar_food["foodNutrients"])):
                 nutr = Nutritional()
-                nutr_gr = self.utils.convert_SI(ing_en.qty, ing_en.unit, 'g')
-                if(nutr_gr is not None):
-                    nutr.value = (nutr_gr*item["value"])/100
-                    nutr.unit = item["unitName"]
+                nutr.value = item["value"]
+                nutr.unit = item["unitName"]
                 nutrs[self.getValNutUSDA(item["nutrientId"])]=nutr
-        ing.nutr_vals = nutrs
+        return nutrs
     def getQuery(self, ingre):
         #dataType=Survey%20%28FNDDS%29
         return urllib.parse.quote(ingre.text + " " + " ".join(ingre.state))+'&dataType=Survey%20%28FNDDS%29,Foundation,SR%20Legacy&pageSize=10&pageNumber=1'

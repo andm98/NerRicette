@@ -2,6 +2,7 @@ import json
 from NerRicette.code.Nutritional import Nutritional
 class Nutritionals:
   def __init__(self):
+    self.text = ""
     self.protein = None
     self.total_lipid_fat = None
     self.carbohydrate_by_difference = None
@@ -15,6 +16,7 @@ class Nutritionals:
 
   def __iter__(self):
     yield from {
+          "text": self.text,
           "protein": self.protein,
           "total_lipid_fat": self.total_lipid_fat,
           "carbohydrate_by_difference":self.carbohydrate_by_difference,
@@ -34,6 +36,7 @@ class Nutritionals:
 
   def to_json(self):
     to_return = { 
+          "text": self.text,
           "protein": 
             self.protein.to_json() if self.protein is not None else Nutritional().to_json()
           ,

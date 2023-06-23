@@ -12,9 +12,12 @@ class LemmaSimilarity(SimilarityStrategy):
         lemmatized_sentence2 = " ".join([token.lemma_ for token in doc2]) 
         return self.DistBatra(lemmatized_sentence1, lemmatized_sentence2)
       
+    def compareWithTags(self, str1s, str2s, tags1, tags2):
+       return self.compare(str1s, str2s)
     
     def isPresent(self, str1s, str2s):
         THRESHOLD = 1/len(str1s) if len(str1s)> 0 else 1
+        #THRESHOLD = 1
         doc1 = self.nlp(" ".join(str1s).lower())
         lemmatized_sentence1 = " ".join([token.lemma_ for token in doc1]) 
         doc2 = self.nlp(" ".join(str2s).lower())

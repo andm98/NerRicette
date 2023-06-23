@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
  
-class NutritionalDataset(ABC):
+class SemanticTagger(ABC):
     
     @abstractmethod
     def matchIngredient(self, str):
         pass
  
     @abstractmethod
-    def getNutritional(self, ing, first_strategy, alt_strategy):
+    def getSemanticTag(self, ing):
         pass
     
     @abstractmethod
-    def setNutritional(self, ing, nutrs):
+    def setSemanticTag(self, ing, tags):
         pass
