@@ -5,12 +5,14 @@ table {
 }
 </style>
 # NerRicette
-![Bot](assets/imgs/bot_green.png?raw=true "Bot")
+<div style="text-align: center;">
+  <img src="assets/imgs/bot_green.png" alt="Bot" />
+</div>
 The repository contains NerRicette, a model for recognizing cooking-related tags and for estimating nutritional values.
 A multilingual BERT model is used, trained in token classification with the following tags:
 | Tag           | Descrizione                                              |
 | ------------- | -------------------------------------------------------- |
-| B-ING         | Ingredient name, including type ("farina 00",  "carne di manzo", "lievito di birra"), color ("riso bianco", "nero"),  taste ("gelato al cioccolato") and origin ( "pecorino romano").            |
+| B-ING         | Ingredient name, including type ("farina 00",  "carne di manzo", "lievito di birra"), color ("riso bianco", "nero"),  taste ("gelato al cioccolato") and origin ("pecorino romano").            |
 | I-ING         | Term within a span of an ingredient.                     |
 | B-QUANTITY    | Quantity.                                                |
 | I-QUANTITY    | Term within a span of a quantity.                        |
@@ -20,10 +22,9 @@ A multilingual BERT model is used, trained in token classification with the foll
 | I-STATE       | Term within a span of a state.                           |
 | B-PART        | Part of the ingredient  ("succo", "buccia", "fegato", "filetto").                                                                |
 | I-PART        | Term within a span of a part of the ingredient.          |
-| B-ALT         |   Alternative to an ingredient. The alternative can 
-include all the elements of this table or only some of them.               |
+| B-ALT         |   Alternative to an ingredient. The alternative can include all the elements of this table or only some of them.                 |
 | I-ALT         | Term within a span of an alternative.                    |
-| O             | Punctuation or terms not included in the above categories.                                                                        |
+| O             | Punctuation or terms not included in the above categories.                                                                       |
 
 Nutritional values are estimated by searching for the closest ingredient among those available in the USDA datasets.
 You can test the model at the following link:
@@ -36,7 +37,7 @@ You can test the model at the following link:
 3. Run the 'AnnotatedDataset' notebook for annotated dataset creation
 4. Run the 'Training' notebook to train the model
 You can use the dataset data\annotated\recipe_dataset.csv and perform step 4 directly.
-#### Food Wordl
+#### Food World
 The model was used for developing a webapp, referred to as Food World (currently not online).
 Food World is a platform for the semantic search of recipes, the estimation of nutritional values, and the creation of nutritional models.
 Database design and individual tasks are described.
