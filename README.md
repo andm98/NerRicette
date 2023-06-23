@@ -5,9 +5,8 @@ table {
 }
 </style>
 # NerRicette
-<div style="text-align: center;">
-  <img src="assets/imgs/bot_green.png" alt="Bot" />
-</div>
+![Bot](assets/imgs/bot_green.png?raw=true "Bot")
+
 The repository contains NerRicette, a model for recognizing cooking-related tags and for estimating nutritional values.
 A multilingual BERT model is used, trained in token classification with the following tags:
 | Tag           | Descrizione                                              |
