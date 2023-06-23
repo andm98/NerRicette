@@ -1,9 +1,3 @@
-<style>
-table {
-  table-layout: fixed;
-  word-wrap: break-word;
-}
-</style>
 # NerRicette
 ![Bot](assets/imgs/bot_green.png?raw=true "Bot")
 
