@@ -4,6 +4,7 @@ from NerRicette.code.datamodel.Nutritional import Nutritional
 import json
 class Recipe:
     def __init__(self):
+        self.id = None
         self.title = None
         self.time = None
         self.portion = None
@@ -12,6 +13,7 @@ class Recipe:
         self.nutritionals = None
     def __iter__(self):
         yield from {
+            "id": self.id,
             "title": self.title,
             "time": self.time,
             "portion": self.portion,
@@ -27,7 +29,7 @@ class Recipe:
         
     def to_json(self):
         nutr_val = Nutritionals() if self.nutritionals is None else self.nutritionals 
-        to_return = {"title": self.title, "time": self.time,"portion": self.portion, "ingredients": [], "instructions": self.instructions, "nutritionals": nutr_val.to_json()}
+        to_return = {"id":self.id, "title": self.title, "time": self.time,"portion": self.portion, "ingredients": [], "instructions": self.instructions, "nutritionals": nutr_val.to_json()}
         ingrs = []
         for ingr in self.ingredients:
             ingrs.append(ingr.to_json())

@@ -4,20 +4,25 @@ from NerRicette.code.datamodel.Nutritionals import Nutritionals
 from NerRicette.code.datamodel.Nutritionals import Nutritional
 from NerRicette.code.QtyConverter import QtyConverter
 from NerRicette.code.datamodel.Ingredient import Ingredient
+from NerRicette.code.tagger.NerRicetteTagger import NerRicetteTagger
 from NerRicette.code.abstract_class.SemanticTagger import SemanticTagger
 import urllib
 import requests
 import json
 import spacy
+from django.conf import settings
+from recipeapp.dao import FoodUsdaDao
 class UsdaDataset(NutritionalDataset):
     def __init__(self, parser, tagger):
+        self.food_usda_dao = FoodUsdaDao()
         self.utils = Utils()
         self.semanticTagger = tagger
         self.qtyConverter = QtyConverter()
         self.parser = parser
-        self.api_key = 'pgCVzl1d9f0Fe6fpNcVAkWbk1z8A7sCSzrhyNFGe'
+        self.api_key = settings.USDA
         self.url = 'https://api.nal.usda.gov/fdc/v1/foods/search/'
         self.nlp = spacy.load('en_core_web_sm')
+        self.nerRicetteTagger = NerRicetteTagger()
     def setNutritional(self, ing, nutrs):
          ing.nutr_vals = nutrs
     
@@ -29,8 +34,8 @@ class UsdaDataset(NutritionalDataset):
             print("Superato il limite di chiamate dell'api USDA")
             return None
         foods = json.loads(req.text)["foods"]
-        #for food in foods:
-        #    self.saveNutritional(food["description"], None, self.getNutritionals(food))
+        for food in foods:
+            self.saveNutritional(food["description"], None, self.getNutritionals(food))
         foods = list(filter(lambda food: first_strategy.isPresent(names_only, food["description"].split(', ')[:2]) , foods))
         if(len(foods)==0):
             return None 
@@ -116,3 +121,6 @@ class UsdaDataset(NutritionalDataset):
             if self.utils.isBlank(food_text):
                 names_only.remove(word)
         return names_only if len(names_only)>0 else [ing.text]
+    
+    def saveNutritional(self, text, semantic_tags, nutritionals):
+        self.food_usda_dao.save(text, nutritionals)   

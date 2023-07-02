@@ -5,11 +5,14 @@ import urllib
 import requests
 import json
 import time
+from NerRicette.code.tagger.NerRicetteTagger import NerRicetteTagger 
+from django.conf import settings
 class BioPortalTagger(SemanticTagger):
     def __init__(self):
         self.utils = Utils()
-        self.api_key = 'c74be9f9-108a-4eed-bee3-19feedd5ccec'
+        self.api_key = settings.BIO_PORTAL
         self.url = 'https://data.bioontology.org/annotator'
+        self.nerRicetteTagger = NerRicetteTagger()
         
     
     
@@ -19,6 +22,10 @@ class BioPortalTagger(SemanticTagger):
     
     def getSemanticTag(self, ing, n_attempt=1):
         tags = None
+        tags = self.nerRicetteTagger.getSemanticTag(ing)
+        if tags is not None:
+            print(tags)
+            return tags
         time.sleep(2)
         try:
             req = requests.get(self.getQuery(ing))
@@ -27,9 +34,15 @@ class BioPortalTagger(SemanticTagger):
                 return None
             tags = json.loads(req.text)
             tags = list(map(lambda tag: {
+                "id": None,
                 "concept": tag["annotatedClass"]["@id"].split('#')[1],
                 "self": tag["annotatedClass"]["@id"],
-                "ancestor": tag["hierarchy"][0]["annotatedClass"]["@id"] if len(tag["hierarchy"])>0 else ""
+                "ancestor":
+                {
+                    "id": None,
+                    "self": tag["hierarchy"][0]["annotatedClass"]["@id"] if len(tag["hierarchy"])>0 else "",
+                    "concept": tag["hierarchy"][0]["annotatedClass"]["@id"].split('#')[1] if len(tag["hierarchy"])>0 else "",
+                }
             }, tags))    
         except:
             print("Eccezione")

@@ -4,6 +4,7 @@ from NerRicette.code.datamodel.Nutritional import Nutritional
 
 class Ingredient:
   def __init__(self, **kwargs):
+    self.id = None
     self.text = ""
     self.qty = ""
     self.unit = ""
@@ -16,6 +17,7 @@ class Ingredient:
     self.human_check = '0'
   def __iter__(self):
     yield from {
+          "id": self.id,
           "text": self.text,
           "qty": self.qty,
           "unit":self.unit,
@@ -36,6 +38,7 @@ class Ingredient:
   def to_json(self):
     nutr_val = Nutritionals() if self.nutr_vals is None else self.nutr_vals 
     to_return = {
+      "id": self.id,
       "text": self.text, "qty": self.qty, "unit":self.unit,
       "state":self.state, "part": self.part, 
       "alt": self.alt, "nutr_vals": nutr_val.to_json(),

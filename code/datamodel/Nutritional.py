@@ -1,11 +1,13 @@
 import json
 class Nutritional:
   def __init__(self):
+    self.id = None
     self.value = None
     self.unit = None
 
   def __iter__(self):
     yield from {
+          "id": None,
           "value": self.value,
           "unit": self.unit
     }.items()
@@ -16,7 +18,7 @@ class Nutritional:
       return self.__str__()
         
   def to_json(self):
-    to_return = {"value": self.value, "unit": self.unit}
+    to_return = {"id": self.id, "value": self.value, "unit": self.unit}
     return to_return
   def __getitem__(self, key):
     return getattr(self, key)

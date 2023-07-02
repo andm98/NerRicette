@@ -2,6 +2,7 @@ import json
 from NerRicette.code.datamodel.Nutritional import Nutritional
 class Nutritionals:
   def __init__(self):
+    self.id = None
     self.text = ""
     self.protein = None
     self.total_lipid_fat = None
@@ -16,6 +17,7 @@ class Nutritionals:
     self.human_check = '0'
   def __iter__(self):
     yield from {
+          "id": None,
           "text": self.text,
           "human_check": self.human_check,
           "protein": self.protein,
@@ -37,6 +39,7 @@ class Nutritionals:
 
   def to_json(self):
     to_return = { 
+          "id": self.id,
           "text": self.text,
           "human_check": self.human_check,
           "protein": 
