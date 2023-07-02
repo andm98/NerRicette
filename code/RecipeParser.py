@@ -7,18 +7,15 @@ from NerRicette.code.dataset.UsdaDataset import UsdaDataset
 from NerRicette.code.similarity.LemmaSimilarity import LemmaSimilarity
 from NerRicette.code.similarity.EmbeddingSimilarity import EmbeddingSimilarity
 from NerRicette.code.tagger.BioPortalTagger import BioPortalTagger 
-from NerRicette.code.dataset.NerRicetteDataset import NerRicetteDataset 
 from recipe_scrapers import scrape_me
 from transformers import logging
 from tqdm import tqdm
-from django.conf import settings
+
 from pathlib import Path
-from django.conf import settings
 class RecipeParser:
   logging.set_verbosity_error()
-  PATH = Path(settings.BASE_DIR, 'NerRicette','code', 'model')
+  PATH = "./model"
   def __init__(self):
-    self.nerDataset = NerRicetteDataset()
     self.semanticTagger = BioPortalTagger()
     self.utils = Utils()
     self.qtyConverter = QtyConverter()
@@ -37,13 +34,6 @@ class RecipeParser:
   def parseIngredients(self, text):    
     ings = self.getIngsFromAnns(self.token_classifier(text.lower()))
     for ing in ings:
-      res = self.nerDataset.matchIngredient(ing, self.first_strg, self.alt_strg)
-      print(res)
-      if res is not None:
-        ing.nutr_vals = res.nutr_vals
-        ing.semantic_tags = res.semantic_tags
-        ing.diet_types = res.diet_types
-      else:
         ing_en = self.utils.translateIngredient(ing)
         tag = self.semanticTagger.getSemanticTag(ing_en.text)
         ing.semantic_tags = tag

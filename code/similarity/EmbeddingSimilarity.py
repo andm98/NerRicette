@@ -4,11 +4,11 @@ import torch
 from scipy.spatial.distance import cosine
 from transformers import AutoTokenizer, AutoModel
 import spacy
-from django.conf import settings
+
 from pathlib import Path
 class EmbeddingSimilarity(SimilarityStrategy):
     def __init__(self):
-        PATH =   PATH = Path(settings.BASE_DIR, 'NerRicette','code', 'model')
+        PATH =   PATH = "./model"
         
         self.model =  AutoModel.from_pretrained(PATH, output_hidden_states=True)
         self.tokenizer = AutoTokenizer.from_pretrained(PATH)

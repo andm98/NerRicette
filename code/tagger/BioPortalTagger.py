@@ -5,14 +5,12 @@ import urllib
 import requests
 import json
 import time
-from NerRicette.code.tagger.NerRicetteTagger import NerRicetteTagger 
-from django.conf import settings
+
 class BioPortalTagger(SemanticTagger):
     def __init__(self):
         self.utils = Utils()
-        self.api_key = settings.BIO_PORTAL
+        self.api_key = "c74be9f9-108a-4eed-bee3-19feedd5ccec"
         self.url = 'https://data.bioontology.org/annotator'
-        self.nerRicetteTagger = NerRicetteTagger()
         
     
     
@@ -22,10 +20,6 @@ class BioPortalTagger(SemanticTagger):
     
     def getSemanticTag(self, ing, n_attempt=1):
         tags = None
-        tags = self.nerRicetteTagger.getSemanticTag(ing)
-        if tags is not None:
-            print(tags)
-            return tags
         time.sleep(2)
         try:
             req = requests.get(self.getQuery(ing))
