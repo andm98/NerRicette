@@ -11,10 +11,10 @@ import requests
 import json
 import spacy
 from django.conf import settings
-from recipeapp.dao import FoodUsdaDao
+from recipeapp.dao import NutritionalDao
 class UsdaDataset(NutritionalDataset):
     def __init__(self, parser, tagger):
-        self.food_usda_dao = FoodUsdaDao()
+        self.nutritional_dao = NutritionalDao()
         self.utils = Utils()
         self.semanticTagger = tagger
         self.qtyConverter = QtyConverter()
@@ -35,7 +35,7 @@ class UsdaDataset(NutritionalDataset):
             return None
         foods = json.loads(req.text)["foods"]
         for food in foods:
-            self.saveNutritional(food["description"], None, self.getNutritionals(food))
+            self.saveNutritional(self.getNutritionals(food))
         foods = list(filter(lambda food: first_strategy.isPresent(names_only, food["description"].split(', ')[:2]) , foods))
         if(len(foods)==0):
             return None 
@@ -122,5 +122,5 @@ class UsdaDataset(NutritionalDataset):
                 names_only.remove(word)
         return names_only if len(names_only)>0 else [ing.text]
     
-    def saveNutritional(self, text, semantic_tags, nutritionals):
-        self.food_usda_dao.save(text, nutritionals)   
+    def saveNutritional(self, nutritionals):
+        self.nutritional_dao.save(nutritionals)   

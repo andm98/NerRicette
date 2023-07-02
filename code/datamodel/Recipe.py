@@ -90,7 +90,8 @@ class Recipe:
                 
                 if ingredient.nutr_vals is not None and ingredient.nutr_vals.fatty_acids_total_saturated is not None and ingredient.nutr_vals.fatty_acids_total_saturated.value is not None:
                     nutritionals.fatty_acids_total_saturated.value = nutritionals.fatty_acids_total_saturated.value + ingredient.nutr_vals.fatty_acids_total_saturated.value*int(ingredient.qty)/100 if nutritionals.fatty_acids_total_saturated.value is not None else ingredient.nutr_vals.fatty_acids_total_saturated.value*int(ingredient.qty)/100 
-        if self.portion:
+        if self.portion and self.portion.isdigit():
+            self.portion = int(self.portion)
             nutritionals.protein.value = nutritionals.protein.value if nutritionals.protein.value is None else nutritionals.protein.value/self.portion
             nutritionals.total_lipid_fat.value = nutritionals.total_lipid_fat.value if nutritionals.total_lipid_fat.value is None else nutritionals.total_lipid_fat.value/self.portion
             nutritionals.carbohydrate_by_difference.value = nutritionals.carbohydrate_by_difference.value if nutritionals.carbohydrate_by_difference.value is None else nutritionals.carbohydrate_by_difference.value/self.portion

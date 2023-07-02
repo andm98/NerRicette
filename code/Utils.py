@@ -13,7 +13,7 @@ class Utils:
     def isEmpty(self, myArray):
         return myArray is None or len(myArray)==0
     def translateIngredient(self, ing, after_exception = False):
-        trans = self.trans if not after_exception else exc_translator
+        trans = self.trans if not after_exception else self.exc_translator
         print("attendi traduzione...")
         time.sleep(2)
         if ing is None:
