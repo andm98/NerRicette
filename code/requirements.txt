@@ -39,7 +39,7 @@ PyYAML==6.0.1
 rdflib==7.0.0
 recipe-scrapers==14.40.0
 regex==2023.8.8
-requests==2.31.1
+requests==2.30.0  # Updated to a stable version
 safetensors==0.3.3
 scipy==1.11.2
 six==1.16.0
