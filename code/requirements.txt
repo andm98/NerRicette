@@ -2,7 +2,7 @@ pandas==2.1.2
 accelerate==0.23.0
 beautifulsoup4==4.12.2
 blis==0.7.11
-catalogue==2.1.1
+catalogue==2.0.10
 certifi==2023.7.22
 charset-normalizer==3.3.0
 click==8.1.7
